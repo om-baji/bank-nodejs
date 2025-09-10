@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import { CardService } from '../action/card.action'
-import { Decimal } from '@prisma/client'
+import { AppError } from '@bank/handlers'
 
 export class CardController {
   private cardService: CardService
@@ -10,78 +10,55 @@ export class CardController {
   }
 
   createCard = async (req: Request, res: Response) => {
-    try {
-      const card = await this.cardService.createCard(req.body)
-      res.status(201).json({ success: true, data: card })
-    } catch (error) {
-      res.status(400).json({ success: false, error: error.message })
-    }
+    const card = await this.cardService.createCard(req.body)
+    if (!card) throw new AppError('Card creation failed', 400)
+    res.status(201).json({ success: true, data: card })
   }
 
   getCard = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params
-      const card = await this.cardService.getCardById(id)
-      
-      if (!card) {
-        return res.status(404).json({ success: false, error: 'Card not found' })
-      }
-      
-      res.json({ success: true, data: card })
-    } catch (error) {
-      res.status(400).json({ success: false, error: error.message })
-    }
+    const { id } = req.params
+    const card = await this.cardService.getCardById(id)
+    if (!card) throw new AppError('Card not found', 404)
+    res.json({ success: true, data: card })
   }
 
   getUserCards = async (req: Request, res: Response) => {
-    try {
-      const { userId } = req.params
-      const cards = await this.cardService.getUserCards(userId)
-      res.json({ success: true, data: cards })
-    } catch (error) {
-      res.status(400).json({ success: false, error: error.message })
-    }
+    const { userId } = req.params
+    if (!userId) throw new AppError('Invalid userId', 409)
+    const cards = await this.cardService.getUserCards(userId)
+    res.json({ success: true, data: cards })
   }
 
   blockCard = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params
-      const card = await this.cardService.blockCard(id)
-      res.json({ success: true, data: card })
-    } catch (error) {
-      res.status(400).json({ success: false, error: error.message })
-    }
+    const { id } = req.params
+    const card = await this.cardService.blockCard(id)
+    if (!card) throw new AppError('Unable to block card', 400)
+    res.json({ success: true, data: card })
   }
 
   updateLimits = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params
-      const { dailyLimit, monthlyLimit } = req.body
-      
-      const card = await this.cardService.updateLimits(
-        id,
-        dailyLimit ? new Decimal(dailyLimit) : undefined,
-        monthlyLimit ? new Decimal(monthlyLimit) : undefined
-      )
-      
-      res.json({ success: true, data: card })
-    } catch (error) {
-      res.status(400).json({ success: false, error: error.message })
-    }
+    const { id } = req.params
+    const { dailyLimit, monthlyLimit } = req.body
+
+    const card = await this.cardService.updateLimits(
+      id,
+      dailyLimit ? dailyLimit : undefined,
+      monthlyLimit ? monthlyLimit : undefined
+    )
+
+    if (!card) throw new AppError('Unable to update limits', 400)
+    res.json({ success: true, data: card })
   }
 
   processTransaction = async (req: Request, res: Response) => {
-    try {
-      const { cardId, amount, merchantName, type } = req.body
-      const transaction = await this.cardService.processTransaction(
-        cardId,
-        new Decimal(amount),
-        merchantName,
-        type
-      )
-      res.json({ success: true, data: transaction })
-    } catch (error) {
-      res.status(400).json({ success: false, error: error.message })
-    }
+    const { cardId, amount, merchantName, type } = req.body
+    const transaction = await this.cardService.processTransaction(
+      cardId,
+      amount,
+      merchantName,
+      type
+    )
+    if (!transaction) throw new AppError('Transaction failed', 400)
+    res.json({ success: true, data: transaction })
   }
 }
