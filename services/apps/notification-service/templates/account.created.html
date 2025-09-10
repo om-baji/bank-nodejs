@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Your New Account</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+            margin: -20px -20px 20px -20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .account-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        .account-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            font-family: 'Courier New', monospace;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Welcome to SecureBank</h1>
+            <p>Your new account is ready!</p>
+        </div>
+        
+        <p>Dear {{customerName}},</p>
+        
+        <p>Congratulations! Your new {{accountType}} account has been successfully created. We're excited to have you as part of the SecureBank family.</p>
+        
+        <div class="account-info">
+            <h3>Account Details</h3>
+            <p><strong>Account Number:</strong> <span class="account-number">{{accountNumber}}</span></p>
+            <p><strong>Account Type:</strong> {{accountType}}</p>
+            <p><strong>Opening Balance:</strong> {{currency}} {{balance}}</p>
+            <p><strong>Date Created:</strong> {{dateCreated}}</p>
+        </div>
+        
+        <p>Your account is now active and ready to use. You can start making deposits, transfers, and managing your finances through our secure online banking platform.</p>
+        
+        <div style="text-align: center;">
+            <a href="{{bankingUrl}}" class="button">Access Online Banking</a>
+        </div>
+        
+        <h3>Next Steps:</h3>
+        <ul>
+            <li>Download our mobile app for convenient banking</li>
+            <li>Set up direct deposit for your salary</li>
+            <li>Apply for a debit card to access your funds</li>
+            <li>Explore our additional banking services</li>
+        </ul>
+        
+        <p>If you have any questions or need assistance, our customer service team is available 24/7 at <strong>1-800-SECURE-BANK</strong>.</p>
+        
+        <p>Thank you for choosing SecureBank!</p>
+        
+        <p>Best regards,<br>
+        The SecureBank Team</p>
+        
+        <div class="footer">
+            <p>&copy; 2024 SecureBank. All rights reserved.</p>
+            <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

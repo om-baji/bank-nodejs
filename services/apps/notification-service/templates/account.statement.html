@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Statement</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 32px;
+        }
+        .account-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .summary-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        .summary-card .amount {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .customer-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .transactions-table th {
+            background-color: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: none;
+        }
+        .transactions-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        .transactions-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        .credit {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .debit {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        .statement-period {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ACCOUNT STATEMENT</h1>
+            <p>SecureBank - Your Trusted Financial Partner</p>
+        </div>
+        
+        <div class="statement-period">
+            Statement Period: {{startDate}} to {{endDate}}
+        </div>
+        
+        <div class="customer-info">
+            <h3>Account Holder Information</h3>
+            <p><strong>Name:</strong> {{customerName}}</p>
+            <p><strong>Account Number:</strong> {{accountNumber}}</p>
+            <p><strong>Account Type:</strong> {{accountType}}</p>
+            <p><strong>Statement Date:</strong> {{statementDate}}</p>
+        </div>
+        
+        <div class="account-summary">
+            <div class="summary-card">
+                <h3>Opening Balance</h3>
+                <p class="amount">{{currency}} {{openingBalance}}</p>
+            </div>
+            <div class="summary-card">
+                <h3>Closing Balance</h3>
+                <p class="amount">{{currency}} {{closingBalance}}</p>
+            </div>
+        </div>
+        
+        <h3>Transaction History</h3>
+        <table class="transactions-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Reference</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each transactions}}
+                <tr>
+                    <td>{{formatDate this.createdAt}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.reference}}</td>
+                    <td class="debit">{{#if this.isDebit}}{{../currency}} {{this.amount}}{{/if}}</td>
+                    <td class="credit">{{#if this.isCredit}}{{../currency}} {{this.amount}}{{/if}}</td>
+                    <td>{{../currency}} {{this.runningBalance}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 30px;">
+            <h3>Summary</h3>
+            <p><strong>Total Debits:</strong> {{currency}} {{totalDebits}}</p>
+            <p><strong>Total Credits:</strong> {{currency}} {{totalCredits}}</p>
+            <p><strong>Net Change:</strong> {{currency}} {{netChange}}</p>
+            <p><strong>Number of Transactions:</strong> {{transactionCount}}</p>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2024 SecureBank. All rights reserved.</p>
+            <p>For any queries, contact us at 1-800-SECURE-BANK or email support@securebank.com</p>
+            <p>This statement is generated electronically and does not require a signature.</p>
+        </div>
+    </div>
+</body>
+</html>

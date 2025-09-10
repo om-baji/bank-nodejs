@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Alert</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .alert-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .transaction-details {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        .amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #28a745;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .debit-amount {
+            color: #dc3545;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #666;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .security-notice {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="alert-icon">{{#if isCredit}}💰{{else}}💳{{/if}}</div>
+            <h2>Transaction Alert</h2>
+            <p>Account Activity Notification</p>
+        </div>
+        
+        <p>Dear {{customerName}},</p>
+        
+        <p>A transaction has been {{#if isCredit}}credited to{{else}}debited from{{/if}} your account. Here are the details:</p>
+        
+        <div class="amount {{#unless isCredit}}debit-amount{{/unless}}">
+            {{#if isCredit}}+{{else}}-{{/if}}{{currency}} {{amount}}
+        </div>
+        
+        <div class="transaction-details">
+            <div class="detail-row">
+                <span class="detail-label">Transaction Type:</span>
+                <span>{{transactionType}}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Description:</span>
+                <span>{{description}}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Account:</span>
+                <span>****{{accountNumberLast4}}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Reference:</span>
+                <span>{{reference}}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Date & Time:</span>
+                <span>{{transactionDateTime}}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Available Balance:</span>
+                <span><strong>{{currency}} {{availableBalance}}</strong></span>
+            </div>
+        </div>
+        
+        <div class="security-notice">
+            <h4>🔐 Security Notice</h4>
+            <p>If you did not authorize this transaction, please contact us immediately at <strong>1-800-SECURE-BANK</strong> or through our mobile app.</p>
+        </div>
+        
+        <p>Thank you for banking with SecureBank. Your financial security is our priority.</p>
+        
+        <div class="footer">
+            <p>&copy; 2024 SecureBank. All rights reserved.</p>
+            <p>This is an automated security notification. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

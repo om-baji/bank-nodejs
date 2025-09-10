@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Blocked - Security Alert</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .alert-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .card-info {
+            background-color: #f8d7da;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+        .card-visual {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+        .card-number {
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+        .actions {
+            background-color: #d4edda;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 5px;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="alert-icon">🚫</div>
+            <h2>Card Blocked</h2>
+            <p>Important Security Notification</p>
+        </div>
+        
+        <p>Dear {{customerName}},</p>
+        
+        <p>We're writing to inform you that your card has been blocked for security reasons.</p>
+        
+        <div class="card-info">
+            <h3>⚠️ Card Details</h3>
+            <div class="card-visual">
+                <div style="font-size: 14px; opacity: 0.8;">SECUREBANK</div>
+                <div class="card-number">**** **** **** {{cardLastFour}}</div>
+                <div style="margin-top: 15px;">
+                    <span>{{cardHolder}}</span>
+                    <span style="float: right;">{{cardType}}</span>
+                </div>
+            </div>
+            <p><strong>Blocked Date:</strong> {{blockedDate}}</p>
+            <p><strong>Reason:</strong> {{blockReason}}</p>
+        </div>
+        
+        <div class="actions">
+            <h3>✅ What You Can Do</h3>
+            <ul>
+                <li><strong>Request New Card:</strong>
