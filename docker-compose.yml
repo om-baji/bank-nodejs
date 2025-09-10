@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  kafka:
+    container_name: kafka-container
+    image: apache/kafka
+    ports:
+      - 9092:9092
+    restart: no
+  
+  redis:
+    container_name: redis-container
+    image: redis
+    ports:
+      - 6379:6379
+    restart: no
+  
+  postgres:
+    container_name: postgres-container
+    image: postgres
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    restart: "no"
+  
+  prometheus:
+    container_name: prometheus-container
+    image: prometheus
+    ports:
+      - 9090:9090
+    restart: no
+  
+  grafana:
+    container_name: grafana-container
+    image: grafana/grafana-oss
+    ports:
+      - 3000:3000
+    restart: no
+  
+  loki:
+    container_name: loki-container
+    image: grafana/loki
+    ports:
+      - 3100:3100
+    restart: no
