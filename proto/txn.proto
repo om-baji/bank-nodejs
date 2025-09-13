@@ -1,22 +1,22 @@
 syntax = "proto3";
-
-package bank;
-
-option go_package = "payments-core/bankpb";
-
-service BankService {
-  rpc Transfer (TransferRequest) returns (TransactionResponse);
-}
+package transfer;
+option go_package = "payments-core/proto;pb";
 
 message TransferRequest {
   string from_account_id = 1;
   string to_account_id = 2;
-  double amount = 3;
+  int64 amount = 3;
   string description = 4;
 }
 
-message TransactionResponse {
-  int64 transaction_id = 1;
-  string status = 2;
-  string reference = 3;
+message TransferResponse {
+  string transaction_id = 1;
+  string reference = 2;
+  string status = 3;
+  int64 amount = 4;
+  string created_at = 5;
+}
+
+service TransferService {
+  rpc Transfer(TransferRequest) returns (TransferResponse);
 }
