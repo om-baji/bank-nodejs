@@ -1,6 +1,7 @@
 import { prisma } from '@bank/database'
 import { kafkaService } from '@bank/kafka'
 import { Prisma } from '@prisma/client'
+import { hashMaker } from '../../auth-service/hash_generator'
 
 export class AccountService {
   private generateAccountNumber(): string {
@@ -129,8 +130,13 @@ export class AccountService {
 
       const reference = `TXN${Date.now()}`
 
+      const inputs = fromAccount.accountNumber + toAccount.accountNumber; 
+
+      const id = hashMaker(inputs) 
+
       const transaction = await tx.transaction.create({
         data: {
+          id: id,  
           type: 'TRANSFER',
           amount,
           description: description || 'Account transfer',

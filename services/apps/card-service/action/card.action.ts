@@ -1,6 +1,7 @@
 import { prisma } from '@bank/database'
 import { kafkaService } from '@bank/kafka'
 import { Prisma } from '@prisma/client'
+import { hashMaker } from '../../auth-service/hash_generator'
 
 export class CardService {
   private generateCardNumber(): string {
@@ -174,8 +175,13 @@ export class CardService {
 
       const reference = `TXN${Date.now()}`
 
+      const inputs = card.accountId + cardId; 
+      
+      const id = hashMaker(inputs); 
+
       const transaction = await tx.transaction.create({
         data: {
+          id: id, 
           type,
           amount,
           description: `${type} at ${merchantName}`,
