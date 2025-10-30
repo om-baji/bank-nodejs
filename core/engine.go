@@ -32,7 +32,7 @@ func (k *KafkaService) PublishMessage(topic string, payload map[string]interface
 	return nil
 }
 
-func Transfer(ctx context.Context, db *sql.DB, kafka *KafkaService, fromAccountId, toAccountId string, amount int64, description string) (*Transaction, error) {
+func Transfer(ctx context.Context, db *sql.DB, kafka *KafkaService, km KeyManager, fromAccountId, toAccountId string, amount int64, description string) (*Transaction, error) {
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -72,7 +72,10 @@ func Transfer(ctx context.Context, db *sql.DB, kafka *KafkaService, fromAccountI
 		}
 	}
 
-	ref := fmt.Sprintf("TXN%d", time.Now().UnixNano())
+	ref, err := GenerateReference(km)
+	if err != nil {
+		return nil, err
+	}
 	if description == "" {
 		description = "Account transfer"
 	}
@@ -103,14 +106,22 @@ func Transfer(ctx context.Context, db *sql.DB, kafka *KafkaService, fromAccountI
 		CreatedAt:   time.Now(),
 	}
 
-	go kafka.PublishMessage("transfer.completed", map[string]interface{}{
+	kafkaPayload := map[string]interface{}{
 		"transactionId": transactionID,
 		"fromAccountId": fromAccountId,
 		"toAccountId":   toAccountId,
 		"amount":        amount,
 		"reference":     ref,
-		"timestamp":     time.Now(),
-	})
+		"timestamp":     time.Now().UTC().Format(time.RFC3339Nano),
+	}
+
+	payloadBytes := []byte(fmt.Sprintf("%s|%s|%s|%d|%s", transactionID, fromAccountId, toAccountId, amount, ref))
+	sig, err := SignPayload(payloadBytes, km)
+	if err == nil {
+		kafkaPayload["sig"] = sig
+	}
+
+	go kafka.PublishMessage("transfer.completed", kafkaPayload)
 
 	return t, nil
 }
