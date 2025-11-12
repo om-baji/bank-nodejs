@@ -7,4 +7,4 @@ app.use(express.json())
 
 app.use("/api/user", router);
 
-app.listen(7000, () => console.log("Accout Service running!"))
+app.listen(3004, () => console.log("Accout Service running!"))

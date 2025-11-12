@@ -23,6 +23,8 @@
     "packages/*"
   ],
   "dependencies": {
-    "@prisma/client": "^6.15.0"
+    "@prisma/client": "^6.15.0",
+    "@types/express": "^5.0.5",
+    "express": "^5.1.0"
   }
 }
